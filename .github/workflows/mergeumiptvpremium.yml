@@ -17,18 +17,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout repository (NO credentials)
+      - name: 📥 Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          persist-credentials: false   # IMPORTANT!!!
+          persist-credentials: false
 
       - name: 🔧 Configure Git identity
         run: |
           git config --global user.name "Syntax404errorrr"
           git config --global user.email "syntax404errorrr@users.noreply.github.com"
 
-      - name: 🔧 Authenticate with PAT (force override GitHub creds)
+      - name: 🔧 Authenticate with PAT
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
@@ -36,31 +36,29 @@ jobs:
           git remote add origin https://$PAT_TOKEN@github.com/Syntax404errorrr/HIDDEN.git
           git fetch origin
 
-      - name: 🔥 Reset local repo to match remote (fixes ALL push errors)
-        run: |
-          git reset --hard origin/main
+      - name: 🔥 Reset local repo to match remote
+        run: git reset --hard origin/main
 
       - name: 🐍 Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      - name: 📦 Install Python dependencies
+      - name: 📦 Install dependencies
         run: pip install requests
 
       - name: ▶️ Execute merge script
-        run: python mergeumiptvpremium.py
+        run: python mergeumiptvpremium.py  # Update path if in a subfolder
 
       - name: 💾 Commit playlist changes
         run: |
-          git add UMIPTVPREMIUM.m3u
+          git add UMIPTVPREMIUM.m3u   # Update path if needed
           git diff --cached --quiet || git commit -m "📝 Auto-update UMIPTVPREMIUM.m3u at $(date -u)"
 
       - name: ⏳ Reduce collisions
         run: sleep $((RANDOM % 10 + 3))
 
-      - name: 🚀 Force push (never fails)
+      - name: 🚀 Force push
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
-        run: |
-          git push origin HEAD:main --force
+        run: git push origin HEAD:main --force
