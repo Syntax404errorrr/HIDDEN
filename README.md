@@ -1,6 +1,6 @@
 # HIDDEN
 
-> Seamlessly manage, merge, and generate IPTV playlists with HIDDEN.  
+> Seamlessly manage, merge, and generate IPTV playlists with HIDDEN.
 
 ---
 
@@ -11,6 +11,7 @@
 - [Installation](#installation)  
 - [Usage](#usage)  
 - [Configuration & Files Overview](#configuration--files-overview)  
+- [Full Code](#full-code)  
 - [Contributing](#contributing)  
 - [License](#license)  
 - [Acknowledgments](#acknowledgments)  
