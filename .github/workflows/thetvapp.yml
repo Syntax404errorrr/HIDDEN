@@ -2,8 +2,8 @@ name: 🚀 Update TheTVApp Playlist 📺
 
 on:
   schedule:
-    - cron: '0 */2 * * *'  # Every 2 hours on the hour (00:00, 02:00, ..., 22:00 UTC)
-  workflow_dispatch:        # Manual trigger
+    - cron: '0 */2 * * *'  # Every 2 hours on the hour (UTC)
+  workflow_dispatch:
 
 jobs:
   scrape:
@@ -12,13 +12,16 @@ jobs:
     steps:
       - name: 📥 Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: false  # important to use PAT
 
       - name: 🐍 Set up Python 3.11
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      - name: 📦 Install Python dependencies & Playwright browsers + system deps
+      - name: 📦 Install Python dependencies & Playwright browsers
         run: |
           python -m pip install --upgrade pip
           pip install playwright urllib3
@@ -28,10 +31,13 @@ jobs:
       - name: 🎯 Run scraping script
         run: python tv.py
 
-      - name: 💾 Commit & force-push playlist if changed (excluding workflow files)
+      - name: 💾 Commit & push playlist if changed
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "Syntax404errorrr"
+          git config --global user.email "syntax404errorrr@users.noreply.github.com"
+          git remote set-url origin https://$PAT_TOKEN@github.com/Syntax404errorrr/HIDDEN.git
           git add TheTVApp.m3u
-          git reset -- .github/workflows/ || true    # Unstage workflow files if staged
-          git diff --cached --quiet || (git commit -m "Update playlist $(date -u)" && git push --force origin main)
+          git reset -- .github/workflows/ || true
+          git diff --cached --quiet || (git commit -m "Update playlist $(date -u)" && git push origin main)
