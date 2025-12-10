@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: false  # important to use PAT
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -27,9 +30,12 @@ jobs:
         run: python smart_sflix_scraper_playwright.py
 
       - name: Commit Updated Playlist
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "Syntax404errorrr"
+          git config --global user.email "syntax404errorrr@users.noreply.github.com"
+          git remote set-url origin https://$PAT_TOKEN@github.com/Syntax404errorrr/HIDDEN.git
           git add output/movies.m3u
-          git commit -m "🔄 Auto-update: movies.m3u" || echo "No changes to commit"
-          git push
+          git diff --cached --quiet || git commit -m "🔄 Auto-update: movies.m3u"
+          git push origin main
