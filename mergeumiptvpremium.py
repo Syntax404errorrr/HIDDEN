@@ -6,13 +6,13 @@ from datetime import datetime
 # List of M3U source URLs
 urls = [
     "http://drewlive24.duckdns.org:8081/Tims247.m3u8",
-    "https://raw.githubusercontent.com/PRENDLYMADAPAKER/ANG-KALAT-MO/refs/heads/main/TheTVApp.m3u",
-    "https://raw.githubusercontent.com/PRENDLYMADAPAKER/ANG-KALAT-MO/refs/heads/main/IPTV%20PREMIUM"
+    "https://raw.githubusercontent.com/Syntax404errorrr/HIDDEN/refs/heads/main/TheTVApp.m3u",
+    "https://raw.githubusercontent.com/Syntax404errorrr/HIDDEN/refs/heads/main/IPTV%20PREMIUM"
 ]
 
 # File where merged content will be saved
 EPG_URL = "https://tinyurl.com/DrewLive002-epg"
-output_file = "NZMIPTVPREMIUM.m3u"
+output_file = "UMIPTVPREMIUM.m3u"
 
 # Track whether we've added the #EXTM3U header already
 header_written = False
