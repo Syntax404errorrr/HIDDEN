@@ -5,12 +5,12 @@ on:
     branches:
       - main
     paths:
-      - 'mergeiptvpremium.py'                  # 🛠 Trigger on script changes
-      - '.github/workflows/mergeiptvpremium.yml'  # 📝 Or workflow changes
+      - 'mergeiptvpremium.py'                  
+      - '.github/workflows/mergeiptvpremium.yml'  
   schedule:
-    - cron: '0 * * * *'      # 🕛 Every hour at minute 0
-    - cron: '*/10 * * * *'   # ⏱ Every 10 minutes
-  workflow_dispatch:          # 🔘 Manual trigger
+    - cron: '0 * * * *'      # Every hour at minute 0
+    - cron: '*/10 * * * *'   # Every 10 minutes
+  workflow_dispatch:          
 
 jobs:
   update-playlist:
@@ -20,7 +20,8 @@ jobs:
       - name: 📥 Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # 🧠 Full git history for safety
+          fetch-depth: 0
+          persist-credentials: false  # important to allow PAT push
 
       - name: 🐍 Set up Python environment
         uses: actions/setup-python@v4
@@ -30,16 +31,13 @@ jobs:
       - name: 📦 Install dependencies
         run: pip install requests
 
-      - name: 🧠 Set Git identity
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
       - name: 🔃 Pull latest changes from main branch
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
-          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git
+          git config --global user.name "Syntax404errorrr"
+          git config --global user.email "syntax404errorrr@users.noreply.github.com"
+          git remote set-url origin https://$PAT_TOKEN@github.com/Syntax404errorrr/HIDDEN.git
           git pull origin main --rebase
 
       - name: ▶️ Run mergeiptvpremium.py script
@@ -52,5 +50,5 @@ jobs:
 
       - name: 🚀 Push changes to main branch
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: git push origin main
