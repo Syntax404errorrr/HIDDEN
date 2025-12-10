@@ -18,7 +18,7 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-          persist-credentials: true
+          persist-credentials: false  # important to use PAT
 
       - name: 🐍 Set up Python
         uses: actions/setup-python@v4
@@ -30,8 +30,8 @@ jobs:
 
       - name: 🧠 Configure Git user
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@users.noreply.github.com"
+          git config --global user.name "Syntax404errorrr"
+          git config --global user.email "syntax404errorrr@users.noreply.github.com"
 
       - name: 🔄 Run update script and update timestamp
         run: |
@@ -43,7 +43,10 @@ jobs:
         run: sleep $((RANDOM % 10 + 5))
 
       - name: 💾 Commit and push if changes
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
+          git remote set-url origin https://$PAT_TOKEN@github.com/Syntax404errorrr/HIDDEN.git
           git add Tims247.m3u8
           if git diff --cached --quiet; then
             echo "✅ No changes to commit"
