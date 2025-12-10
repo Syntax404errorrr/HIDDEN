@@ -1,0 +1,61 @@
+name: 🔄 Auto Update NZM PREMIUM IPTV Playlist
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'mergeumiptvpremium.py'
+      - '.github/workflows/mergeumiptvpremium.yml'
+  schedule:
+    - cron: '0 * * * *'
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  update-playlist:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: false  # important to use PAT
+
+      - name: 🐍 Set up Python environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: 📦 Install dependencies
+        run: pip install requests
+
+      - name: 🧠 Configure Git identity
+        run: |
+          git config --global user.name "Syntax404errorrr"
+          git config --global user.email "syntax404errorrr@users.noreply.github.com"
+
+      - name: 🔃 Sync with remote main branch
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          git remote set-url origin https://$PAT_TOKEN@github.com/Syntax404errorrr/HIDDEN.git
+          git fetch origin main
+          git reset --hard origin/main
+
+      - name: ▶️ Run merge script
+        run: python mergeumiptvpremium.py
+
+      - name: 📂 Stage & commit updated playlist
+        run: |
+          git add UMIPTVPREMIUM.m3u
+          git diff --cached --quiet || git commit -m "📝 Auto-update UMIPTVPREMIUM.m3u IPTV playlist at $(date -u)"
+
+      - name: ⏳ Random delay before push to reduce collisions
+        run: sleep $((RANDOM % 10 + 5))
+
+      - name: 🚀 Push changes to main branch
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: git push origin main --force
