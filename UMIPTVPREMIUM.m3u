@@ -1,6 +1,6 @@
 #EXTM3U
 #EXTM3U url-tvg="https://tinyurl.com/DrewLive002-epg"
-# Generated: 2025-12-13T11:30:07.373948 UTC
+# Generated: 2025-12-13T11:54:23.468604 UTC
 
 # ERROR fetching http://drewlive24.duckdns.org:8081/Tims247.m3u8: HTTPConnectionPool(host='drewlive24.duckdns.org', port=8081): Max retries exceeded with url: /Tims247.m3u8 (Caused by NewConnectionError("HTTPConnection(host='drewlive24.duckdns.org', port=8081): Failed to establish a new connection: [Errno 111] Connection refused"))
 #EXTINF:-1  tvg-name="A&E SD" tvg-id="ae-us-eastern-feed" tvg-logo="https://github.com/tv-logo/tv-logos/blob/main/countries/united-states/a-and-e-us.png?raw=true" group-title="TheTVApp",A&E SD
